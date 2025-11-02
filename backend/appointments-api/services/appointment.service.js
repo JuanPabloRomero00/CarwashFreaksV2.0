@@ -1,18 +1,27 @@
 const Appointment = require('../models/Appointment');
 
 exports.createAppointment = async (requestingUser, data) => {
-  const { serviceId, date, time } = data;
-  const userId = requestingUser.id;
-  const appointment = new Appointment({ userId, serviceId, date, time });
+  const { serviceId, date, time, notes } = data;
+  const appointment = new Appointment({ 
+    user: requestingUser.id, 
+    service: serviceId, 
+    date, 
+    time,
+    notes 
+  });
   return await appointment.save();
 };
 
-exports.getAppointmentsByUser = async (requestingUser) => {
-  return await Appointment.find({ userId: requestingUser.id });
+exports.getMyAppointments = async (requestingUser) => {
+  return await Appointment.find({ user: requestingUser.id });
+};
+
+exports.getUserAppointmentsAdmin = async (userId) => {
+  return await Appointment.find({ user: userId });
 };
 
 exports.cancelAppointment = async (requestingUser, appointmentId) => {
-  const appointment = await Appointment.findOne({ _id: appointmentId, userId: requestingUser.id });
+  const appointment = await Appointment.findOne({ _id: appointmentId, user: requestingUser.id });
   if (!appointment) throw { status: 404, message: 'Appointment not found or not allowed' };
   await appointment.deleteOne();
 };

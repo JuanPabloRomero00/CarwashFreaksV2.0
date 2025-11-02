@@ -13,7 +13,7 @@ exports.createAppointment = async (req, res, next) => {
 // Ver mis turnos (usuario)
 exports.getMyAppointments = async (req, res, next) => {
   try {
-    const appointments = await appointmentService.getAppointmentsByUser(req.user);
+    const appointments = await appointmentService.getMyAppointments(req.user);
     res.json({ appointments });
   } catch (err) {
     next(err);
@@ -24,7 +24,7 @@ exports.getMyAppointments = async (req, res, next) => {
 exports.cancelAppointment = async (req, res, next) => {
   try {
     await appointmentService.cancelAppointment(req.user, req.params.id);
-    res.status(204).send();
+    res.status(200).json({ message: 'Cita cancelada correctamente' });
   } catch (err) {
     next(err);
   }
@@ -55,6 +55,16 @@ exports.deleteAppointment = async (req, res, next) => {
   try {
     await appointmentService.deleteAppointment(req.user, req.params.id);
     res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Ver turnos de un usuario (admin)
+exports.getUserAppointmentsAdmin = async (req, res, next) => {
+  try {
+    const appointments = await appointmentService.getUserAppointmentsAdmin(req.params.userId);
+    res.json({ appointments });
   } catch (err) {
     next(err);
   }

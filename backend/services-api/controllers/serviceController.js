@@ -13,9 +13,11 @@ exports.getServices = async (req, res, next) => {
 // Crear servicio (admin)
 exports.createService = async (req, res, next) => {
   try {
+  // ...existing code...
     const service = await serviceService.createService(req.user, req.body);
     res.status(201).json({ service });
   } catch (err) {
+  // ...existing code...
     next(err);
   }
 };
@@ -23,9 +25,11 @@ exports.createService = async (req, res, next) => {
 // Editar servicio (admin)
 exports.updateService = async (req, res, next) => {
   try {
+  // ...existing code...
     const service = await serviceService.updateService(req.user, req.params.id, req.body);
     res.json({ service });
   } catch (err) {
+  // ...existing code...
     next(err);
   }
 };
@@ -34,7 +38,7 @@ exports.updateService = async (req, res, next) => {
 exports.deleteService = async (req, res, next) => {
   try {
     await serviceService.deleteService(req.user, req.params.id);
-    res.status(204).send();
+    res.status(200).json({ message: 'Servicio eliminado correctamente.' });
   } catch (err) {
     next(err);
   }

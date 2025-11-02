@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
+const serviceRoutes = require('./routes/service.Routes');
 
 app.use(helmet());
 app.use(cors({
@@ -20,6 +21,7 @@ app.use(limiter);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+app.use('/api/services', serviceRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
